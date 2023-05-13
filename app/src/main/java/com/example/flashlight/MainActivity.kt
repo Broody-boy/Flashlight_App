@@ -3,10 +3,10 @@ package com.example.flashlight
 import android.content.pm.PackageManager
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private var isFlashOn = false
@@ -24,29 +24,29 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Initialize the CameraManager and get the camera ID for the flash
-        cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
-        cameraId = cameraManager.cameraIdList[0]
-
+        cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager   //cameraManager is the name of the object that references the system's camera manager.
+        cameraId = cameraManager.cameraIdList[0]    //getCameraIdList() is a method of the cameraManager object that returns a list of all the available cameras on the device.
+                                                    //And [0] is the index of the back camera in the list.
         // Set up the flashlight button
-        val flashlightButton = findViewById<Button>(R.id.flashlight_button)
-        flashlightButton.setOnClickListener {
+        val flashlightImgButton = findViewById<ImageButton>(R.id.flashlight_img_button)
+        flashlightImgButton.setOnClickListener {
             toggleFlashlight()
         }
     }
 
     private fun toggleFlashlight() {
-        val flashlightButton = findViewById<Button>(R.id.flashlight_button)
+        val flashlightImgButton = findViewById<ImageButton>(R.id.flashlight_img_button)
         try {
             if (isFlashOn) {
                 // Turn off the flashlight
                 cameraManager.setTorchMode(cameraId, false)
                 isFlashOn = false
-                flashlightButton.text = "Off"
+                flashlightImgButton.setImageResource(R.drawable.off)    //For ImageButton, we use setImageResource while for ImageView, we use setBackgroundResource
             } else {
                 // Turn on the flashlight
                 cameraManager.setTorchMode(cameraId, true)
                 isFlashOn = true
-                flashlightButton.text = "On"
+                flashlightImgButton.setImageResource(R.drawable.on)     //For ImageButton, we use setImageResource while for ImageView, we use setBackgroundResource
             }
         } catch (e: CameraAccessException) {
             e.printStackTrace()
